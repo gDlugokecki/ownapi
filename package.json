@@ -1,0 +1,24 @@
+{
+  "name": "ownapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "bun ./dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.9.2",
+    "@types/pg": "^8.10.9",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "@fastify/postgres": "^5.2.2",
+    "fastify": "^4.24.3",
+    "pg": "^8.11.3"
+  }
+}
