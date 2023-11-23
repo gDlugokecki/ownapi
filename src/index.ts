@@ -6,7 +6,7 @@ import postgres from "@fastify/postgres";
 
 server.register(postgres, {
   connectionString:
-    "postgresql://postgres:postgres@host.docker.internal:5432/ownapidb",
+    "postgresql://postgres:postgres@db:5432/ownapidb",
 });
 
 server.get("/ping", async (request, reply) => {
