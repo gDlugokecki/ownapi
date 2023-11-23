@@ -9,6 +9,7 @@ server.register(postgres, {
 });
 
 server.get("/ping", async (request, reply) => {
+  console.log(Bun.env.CONNECTION_STRING)
   const client = await server.pg.connect();
   return "pong\n";
 });
