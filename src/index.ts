@@ -5,8 +5,7 @@ const server = fastify();
 import postgres from "@fastify/postgres";
 
 server.register(postgres, {
-  connectionString:
-    "postgresql://postgres:postgres@db:5432/ownapidb",
+  connectionString: Bun.env.CONNECTION_STRING,
 });
 
 server.get("/ping", async (request, reply) => {
@@ -14,7 +13,7 @@ server.get("/ping", async (request, reply) => {
   return "pong\n";
 });
 
-server.listen({ port: 8080, host: '0.0.0.0' }, (err, address) => {
+server.listen({ port: 8080, host: "0.0.0.0" }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
