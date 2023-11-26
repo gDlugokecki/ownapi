@@ -19,12 +19,10 @@ server.post(
   async (request: FastifyRequest<{ Body: { question: string } }>, reply) => {
     const client = await server.pg.connect();
 
-    console.log(request.headers['x-forwarded-for'], request.socket.remoteAddress);
-
     try {
       await client.query(
         "INSERT INTO conversations (conversation_id) VALUES ($1)",
-        [request.socket.remoteAddress]
+        [request.headers['x-forwarded-for']]
       );
     } catch (error) {
       reply.status(500).send("Error while adding conversation ID");
