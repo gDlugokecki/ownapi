@@ -57,16 +57,15 @@ server.post(
   async (request: FastifyRequest<{ Body: { question: string } }>, reply) => {
     const { getJson } = require("serpapi");
 
-    getJson(
-      {
-        engine: "google",
-        api_key: Bun.env.SERP_API_KEY,
-        q: request.body.question,
-      },
-      (json: any) => {
-        console.log(json["organic_results"]);
-      }
-    );
+    const response = await getJson({
+      engine: "google",
+      api_key: Bun.env.SERP_API_KEY,
+      q: request.body.question,
+    });
+
+    console.log(response, "RESPONSE");
+
+    return response["organic_results"][0].link;
   }
 );
 
