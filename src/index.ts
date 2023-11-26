@@ -65,7 +65,7 @@ server.post(
 
     console.log(response, "RESPONSE");
 
-    return response["organic_results"][0].link;
+    reply.send({ reply: response["organic_results"][0].link });
   }
 );
 
