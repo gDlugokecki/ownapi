@@ -21,7 +21,7 @@ server.post(
 
     try {
       await client.query(
-        "INSERT INTO conversations (conversation_id) VALUES ($1)",
+        "INSERT INTO conversation (conversation_id) VALUES ($1)",
         [request.headers['x-forwarded-for']]
       );
     } catch (error) {
