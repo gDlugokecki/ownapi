@@ -21,20 +21,21 @@ server.post(
 
     try {
       await client.query(
-        "INSERT INTO conversation (conversation_id) VALUES ($1)",
-        [request.headers['x-forwarded-for']]
+        "INSERT INTO conversation (conversation_id, content) VALUES ($1, $2)",
+        [request.headers["x-forwarded-for"], request.body.question]
       );
     } catch (error) {
       reply.status(500).send("Error while adding conversation ID");
     }
 
     let conversation = [] as string[];
+
     try {
       const result = await client.query(
-        "SELECT conversation_id FROM conversation"
+        `SELECT content FROM conversation WHERE conversation_id ='${request.headers["x-forwarded-for"]}'`
       );
       result.rows.forEach((row) => {
-        conversation.push(row.conversation_id);
+        conversation.push(row.content);
       });
     } catch (err) {
       console.error("Error fetching conversation IDs:", err);
