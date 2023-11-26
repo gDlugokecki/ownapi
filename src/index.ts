@@ -52,6 +52,24 @@ server.post(
   }
 );
 
+server.post(
+  "/serp",
+  async (request: FastifyRequest<{ Body: { question: string } }>, reply) => {
+    const { getJson } = require("serpapi");
+
+    getJson(
+      {
+        engine: "google",
+        api_key: Bun.env.SERP_API_KEY,
+        q: request.body.question,
+      },
+      (json: any) => {
+        console.log(json["organic_results"]);
+      }
+    );
+  }
+);
+
 server.listen({ port: 8080, host: "0.0.0.0" }, (err, address) => {
   if (err) {
     console.error(err);

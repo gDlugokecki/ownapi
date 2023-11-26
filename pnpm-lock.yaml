@@ -23,6 +23,9 @@ dependencies:
   postgrator:
     specifier: ^7.2.0
     version: 7.2.0
+  serpapi:
+    specifier: ^2.0.0
+    version: 2.0.0
 
 devDependencies:
   '@types/node':
@@ -1306,6 +1309,10 @@ packages:
     hasBin: true
     dependencies:
       lru-cache: 6.0.0
+    dev: false
+
+  /serpapi@2.0.0:
+    resolution: {integrity: sha512-LKrIBrXWhZDmS1urFwB8e/T8omW2C7r7ZmW231aVBtMbfNx/p9pi5gkiScM/VSAcsyhX1q3oPeWCvbzQiiwaCg==}
     dev: false
 
   /set-cookie-parser@2.6.0:
