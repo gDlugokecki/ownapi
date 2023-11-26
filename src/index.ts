@@ -63,8 +63,6 @@ server.post(
       q: request.body.question,
     });
 
-    console.log(response, "RESPONSE");
-
     reply.send({ reply: response["organic_results"][0].link });
   }
 );
