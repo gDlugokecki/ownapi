@@ -18,7 +18,6 @@ async function migrate() {
     password: Bun.env.DB_PASSWORD,
   });
 
-  console.log("LOLOLOL");
   try {
     const postgrator = new Postgrator({
       migrationPattern: path.join(__dirname, "./*"),
@@ -28,9 +27,7 @@ async function migrate() {
       execQuery: (query) => client.query(query),
     });
     await client.connect();
-    console.log("LOLOLOL11111111111");
     const result = await postgrator.migrate();
-    console.log("222222222222222");
 
     if (result.length === 0) {
       console.log(
@@ -38,8 +35,8 @@ async function migrate() {
       );
     }
     await client.end();
+    console.log('Migrations applied')
   } catch (err) {
-    console.log("LOLOLOL", err);
     console.error(err);
     process.exitCode = 1;
   }
