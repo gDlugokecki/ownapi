@@ -109,10 +109,10 @@ Note: Only return the JSON coordinates, do not add any formatting like \`\`\`jso
       },
     });
 
-    console.log(chatAnswer.choices[0].message.content);
+    const parsed = JSON.parse(chatAnswer.choices[0].message.content as string);
 
-    const row = chatAnswer.choices[0].message.content as any;
-    const col = chatAnswer.choices[0].message.content as any;
+    const row = parsed.row as any;
+    const col = parsed.col as any;
 
     console.log("ANSWER", { description: mapLocations[row][col], row, col });
 
@@ -120,7 +120,7 @@ Note: Only return the JSON coordinates, do not add any formatting like \`\`\`jso
   }
 );
 
-server.listen({ port: 50419, host: "0.0.0.0" }, (err, address) => {
+server.listen({ port: 8080, host: "0.0.0.0" }, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
