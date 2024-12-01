@@ -112,7 +112,7 @@ Note: Only return the JSON coordinates, do not add any formatting like \`\`\`jso
     const row = chatAnswer.choices[0].message.content.row;
     const col = chatAnswer.choices[0].message.content.col;
 
-    reply.send({ reply: mapLocations[row][col] });
+    reply.send({ reply: { description: mapLocations[row][col] } });
   }
 );
 
