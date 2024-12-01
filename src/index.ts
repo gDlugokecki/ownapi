@@ -1,8 +1,6 @@
 import fastify, { FastifyRequest } from "fastify";
 // import { ChatOpenAI } from "langchain/chat_models/openai";
-import { HumanMessage, SystemMessage } from "langchain/schema";
 import OpenAI from "openai";
-import { getJson } from "serpapi";
 const server = fastify();
 
 // import postgres from "@fastify/postgres";
@@ -71,7 +69,7 @@ server.post(
   "/map",
   async (request: FastifyRequest<{ Body: { instruction: string } }>, reply) => {
     const openAI = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
+      apiKey: Bun.env.OPEN_API_KEY,
     });
 
     console.log(request.body.instruction);
@@ -114,7 +112,7 @@ Note: Only return the JSON coordinates, do not add any formatting like \`\`\`jso
     const row = chatAnswer.choices[0].message.content as any;
     const col = chatAnswer.choices[0].message.content as any;
 
-    console.log("ANSWER", { description: mapLocations[row][col] });
+    console.log("ANSWER", { description: mapLocations[row][col], row, col });
 
     reply.send({ reply: { description: mapLocations[row][col] } });
   }
