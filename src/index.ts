@@ -74,6 +74,8 @@ server.post(
       apiKey: process.env.OPENAI_API_KEY,
     });
 
+    console.log(request.body.instruction);
+
     const mapLocations = [
       ["Punkt lokalizacyjny", "Dzika trawa", "Samotne drzewo", "Wiejski dom"],
       ["Dzika trawa", "Stary wiatrak", "Dzika trawa", "Dzika trawa"],
@@ -111,6 +113,8 @@ Note: Only return the JSON coordinates, do not add any formatting like \`\`\`jso
 
     const row = chatAnswer.choices[0].message.content.row;
     const col = chatAnswer.choices[0].message.content.col;
+
+    console.log("ANSWER", { description: mapLocations[row][col] });
 
     reply.send({ reply: { description: mapLocations[row][col] } });
   }
