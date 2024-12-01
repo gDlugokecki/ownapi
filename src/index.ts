@@ -1,70 +1,70 @@
 import fastify, { FastifyRequest } from "fastify";
-import { ChatOpenAI } from "langchain/chat_models/openai";
+// import { ChatOpenAI } from "langchain/chat_models/openai";
 import { HumanMessage, SystemMessage } from "langchain/schema";
 import { getJson } from "serpapi";
 const server = fastify();
 
-import postgres from "@fastify/postgres";
+// import postgres from "@fastify/postgres";
 
-const chat = new ChatOpenAI({
-  modelName: "gpt-4",
-  openAIApiKey: Bun.env.OPEN_API_KEY,
-});
+// const chat = new ChatOpenAI({
+//   modelName: "gpt-4",
+//   openAIApiKey: Bun.env.OPEN_API_KEY,
+// });
 
-server.register(postgres, {
-  connectionString: Bun.env.CONNECTION_STRING,
-});
+// server.register(postgres, {
+//   connectionString: Bun.env.CONNECTION_STRING,
+// });
 
-server.post(
-  "/ping",
-  async (request: FastifyRequest<{ Body: { question: string } }>, reply) => {
-    const client = await server.pg.connect();
-    const conversationId = request.headers["x-forwarded-for"];
+// server.post(
+//   "/ping",
+//   async (request: FastifyRequest<{ Body: { question: string } }>, reply) => {
+//     const client = await server.pg.connect();
+//     const conversationId = request.headers["x-forwarded-for"];
 
-    try {
-      await client.query(
-        "INSERT INTO conversation (conversation_id, content) VALUES ($1, $2)",
-        [conversationId, request.body.question]
-      );
-    } catch (error) {
-      reply.status(500).send("Error while adding conversation_id");
-    }
+//     try {
+//       await client.query(
+//         "INSERT INTO conversation (conversation_id, content) VALUES ($1, $2)",
+//         [conversationId, request.body.question]
+//       );
+//     } catch (error) {
+//       reply.status(500).send("Error while adding conversation_id");
+//     }
 
-    let conversation = [] as string[];
+//     let conversation = [] as string[];
 
-    try {
-      const result = await client.query(
-        `SELECT content FROM conversation WHERE conversation_id ='${conversationId}'`
-      );
-      result.rows.forEach((row) => {
-        conversation.push(row.content);
-      });
-    } catch (err) {
-      console.error("Error fetching conversation IDs:", err);
-      reply.status(500).send("Error fetching conversation IDs");
-    }
+//     try {
+//       const result = await client.query(
+//         `SELECT content FROM conversation WHERE conversation_id ='${conversationId}'`
+//       );
+//       result.rows.forEach((row) => {
+//         conversation.push(row.content);
+//       });
+//     } catch (err) {
+//       console.error("Error fetching conversation IDs:", err);
+//       reply.status(500).send("Error fetching conversation IDs");
+//     }
 
-    const { content } = await chat.call([
-      new SystemMessage("Be ultra-concise." + conversation.join("\n")),
-      new HumanMessage(request.body.question),
-    ]);
+//     const { content } = await chat.call([
+//       new SystemMessage("Be ultra-concise." + conversation.join("\n")),
+//       new HumanMessage(request.body.question),
+//     ]);
 
-    reply.send({ reply: content });
-  }
-);
+//     reply.send({ reply: content });
+//   }
+// );
 
-server.post(
-  "/serp",
-  async (request: FastifyRequest<{ Body: { question: string } }>, reply) => {
-    const response = await getJson({
-      engine: "google",
-      api_key: Bun.env.SERP_API_KEY,
-      q: request.body.question,
-    });
+// server.post(
+//   "/serp",
+//   async (request: FastifyRequest<{ Body: { question: string } }>, reply) => {
+//     const response = await getJson({
+//       engine: "google",
+//       api_key: Bun.env.SERP_API_KEY,
+//       q: request.body.question,
+//     });
 
-    reply.send({ reply: response["organic_results"][0].link });
-  }
-);
+//     reply.send({ reply: response["organic_results"][0].link });
+//   }
+// );
 
 server.post(
   "/map",
