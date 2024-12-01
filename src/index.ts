@@ -109,6 +109,8 @@ Note: Only return the JSON coordinates, do not add any formatting like \`\`\`jso
       },
     });
 
+    console.log(chatAnswer.choices[0].message.content);
+
     const row = chatAnswer.choices[0].message.content as any;
     const col = chatAnswer.choices[0].message.content as any;
 

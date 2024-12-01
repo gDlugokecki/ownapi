@@ -2,8 +2,8 @@ version: "3.8"
 
 services:
   backend:
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
     build:
       context: .
       dockerfile: fastify.Dockerfile
