@@ -21,7 +21,7 @@
     "@fastify/postgres": "^5.2.2",
     "fastify": "^4.24.3",
     "langchain": "0.0.197-rc.1",
-    "openai": "^4.20.0",
+    "openai": "^4.72.0",
     "pg": "^8.11.3",
     "postgrator": "^7.2.0",
     "serpapi": "^2.0.0"

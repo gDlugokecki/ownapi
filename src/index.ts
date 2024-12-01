@@ -1,6 +1,7 @@
 import fastify, { FastifyRequest } from "fastify";
 // import { ChatOpenAI } from "langchain/chat_models/openai";
 import { HumanMessage, SystemMessage } from "langchain/schema";
+import OpenAI from "openai";
 import { getJson } from "serpapi";
 const server = fastify();
 
@@ -69,7 +70,49 @@ const server = fastify();
 server.post(
   "/map",
   async (request: FastifyRequest<{ Body: { instruction: string } }>, reply) => {
-    reply.send({ reply: "TestPing" });
+    const openAI = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+
+    const mapLocations = [
+      ["Punkt lokalizacyjny", "Dzika trawa", "Samotne drzewo", "Wiejski dom"],
+      ["Dzika trawa", "Stary wiatrak", "Dzika trawa", "Dzika trawa"],
+      ["Dzika trawa", "Dzika trawa", "Skaliste wzgórza", "Dwa drzewa"],
+      [
+        "strome góry",
+        "Górskie szczyty",
+        "Zaparkowany samochód",
+        "Wejście jaskini",
+      ],
+    ];
+    const systemPrompt = `
+    You are an expert interpreter for navigating a 4x4 grid map in a robot drone game. The map is represented as map[row][col], with [0][0] being the starting point at the top-left corner.
+
+Your task is to analyze and interpret a human language description of movements starting from [0][0] and calculate the final position on the grid. The description may include irrelevant terms, canceled commands, or instructions to start over. Carefully process all instructions, but only consider the final decisions to determine the correct position on the grid.
+
+Output format:
+Return only the final position as a JSON object in the following format:
+{  "row": <final_row>,  "col": <final_col> } 
+Note: Only return the JSON coordinates, do not add any formatting like \`\`\`json\`\`\` or other comments.
+    `;
+    const chatAnswer = await openAI.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        { role: "system", content: systemPrompt },
+        {
+          role: "user",
+          content: request.body.instruction,
+        },
+      ],
+      response_format: {
+        type: "json_object",
+      },
+    });
+
+    const row = chatAnswer.choices[0].message.content.row;
+    const col = chatAnswer.choices[0].message.content.col;
+
+    reply.send({ reply: mapLocations[row][col] });
   }
 );
 
