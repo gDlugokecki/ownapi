@@ -1,6 +1,7 @@
 import fastify, { FastifyRequest } from "fastify";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { HumanMessage, SystemMessage } from "langchain/schema";
+import { getJson } from "serpapi";
 const server = fastify();
 
 import postgres from "@fastify/postgres";
@@ -55,8 +56,6 @@ server.post(
 server.post(
   "/serp",
   async (request: FastifyRequest<{ Body: { question: string } }>, reply) => {
-    const { getJson } = require("serpapi");
-
     const response = await getJson({
       engine: "google",
       api_key: Bun.env.SERP_API_KEY,
@@ -64,6 +63,13 @@ server.post(
     });
 
     reply.send({ reply: response["organic_results"][0].link });
+  }
+);
+
+server.post(
+  "/map",
+  async (request: FastifyRequest<{ Body: { instruction: string } }>, reply) => {
+    reply.send({ reply: "TestPing" });
   }
 );
 
