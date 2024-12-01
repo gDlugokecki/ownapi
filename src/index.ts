@@ -86,14 +86,38 @@ server.post(
       ],
     ];
     const systemPrompt = `
-    You are an expert interpreter for navigating a 4x4 grid map in a robot drone game. The map is represented as map[row][col], with [0][0] being the starting point at the top-left corner.
+    You are a precise navigation interpreter for a 4x4 grid-based drone system. The grid is structured as follows:
 
-Your task is to analyze and interpret a human language description of movements starting from [0][0] and calculate the final position on the grid. The description may include irrelevant terms, canceled commands, or instructions to start over. Carefully process all instructions, but only consider the final decisions to determine the correct position on the grid.
+[0,0] [0,1] [0,2] [0,3]
+[1,0] [1,1] [1,2] [1,3]
+[2,0] [2,1] [2,2] [2,3]
+[3,0] [3,1] [3,2] [3,3]
 
-Output format:
-Return only the final position as a JSON object in the following format:
-{  "row": <final_row>,  "col": <final_col> } 
-Note: Only return the JSON coordinates, do not add any formatting like \`\`\`json\`\`\` or other comments.
+Starting position: [0,0] (top-left corner)
+Grid boundaries: 0 ≤ row ≤ 3 and 0 ≤ column ≤ 3
+
+Your role:
+1. Parse natural language movement descriptions
+2. Track position changes considering:
+   - Sequence of movements
+   - Canceled or reversed commands
+   - "Start over" instructions
+   - Movement boundaries (cannot move outside 4x4 grid)
+3. Calculate final position after all valid movements
+
+Input: Natural language description of movements
+Output: JSON object containing final coordinates
+{
+    "row": <final_row>,
+    "col": <final_col>
+}
+
+Rules:
+- Only process the final, valid sequence of movements
+- Ignore irrelevant commentary or ambiguous instructions
+- Movements that would go beyond grid boundaries are ignored
+- If "start over" is mentioned, reset position to [0,0] and only consider subsequent movements
+- Return strictly formatted JSON without additional text or markdown.
     `;
     const chatAnswer = await openAI.chat.completions.create({
       model: "gpt-4o",
