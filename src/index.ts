@@ -111,8 +111,8 @@ Note: Only return the JSON coordinates, do not add any formatting like \`\`\`jso
       },
     });
 
-    const row = chatAnswer.choices[0].message.content.row;
-    const col = chatAnswer.choices[0].message.content.col;
+    const row = chatAnswer.choices[0].message.content as any;
+    const col = chatAnswer.choices[0].message.content as any;
 
     console.log("ANSWER", { description: mapLocations[row][col] });
 
