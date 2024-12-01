@@ -116,7 +116,7 @@ Note: Only return the JSON coordinates, do not add any formatting like \`\`\`jso
 
     console.log("ANSWER", { description: mapLocations[row][col], row, col });
 
-    reply.send({ reply: { description: mapLocations[row][col] } });
+    reply.send({ description: mapLocations[row][col] });
   }
 );
 
